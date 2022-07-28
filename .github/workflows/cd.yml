@@ -25,13 +25,9 @@ jobs:
          - aarch64-linux-gnu
          - mipsel-linux-gnu
          - powerpc64le-linux-gnu
-         #
-         # FIXME: tree-sitter has a known (by me) bug by now:
-         #          ld: unknown option -soname
-         # It should be patched to support
-         # - x86_64-apple-darwin
-         # - x86_64h-apple-darwin
-         # - i386-apple-darwin
+         - x86_64-apple-darwin
+         - x86_64h-apple-darwin
+         - i386-apple-darwin
          #
          # NOTE: Tese are supported by multiarch/crossbuild but not tree-sitter
          # - x86_64-w64-mingw32
@@ -41,7 +37,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build ${{ matrix.lang }} for ${{ matrix.triplet }}
         run: |
-          docker run --rm -v $(pwd):/workdir -e CROSS_TRIPLE=${{ matrix.triplet }} multiarch/crossbuild  ./lang ${{ matrix.lang }}
+          docker run --rm -v $(pwd):/workdir -e CROSS_TRIPLE=${{ matrix.triplet }} unafterthought/crossbuild:bookworm  ./lang ${{ matrix.lang }}
       - name: Build ${{ matrix.lang }} for macos
         if: ${{ matrix.os == 'macos' }}
         run: |
